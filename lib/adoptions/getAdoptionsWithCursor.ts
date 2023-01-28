@@ -11,7 +11,7 @@ export async function petGetAdoptionsWithCursor(
     headers: {
       'Content-Type': 'application/json',
     },
-    // next: { revalidate: 86400 },
+    next: { revalidate: 86400 },
     body: JSON.stringify({
       query: `
       query PetGetAdoptionsWithCursor($args: ConnectionArgs!, $parentId: String!){
