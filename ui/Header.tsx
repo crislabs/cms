@@ -1,44 +1,435 @@
 'use client';
+import { Fragment } from 'react';
+import { Popover, Transition } from '@headlessui/react';
+import {
+  ArrowPathIcon,
+  Bars3Icon,
+  BookmarkSquareIcon,
+  CalendarIcon,
+  ChartBarIcon,
+  CursorArrowRaysIcon,
+  LifebuoyIcon,
+  PhoneIcon,
+  PlayIcon,
+  ShieldCheckIcon,
+  Squares2X2Icon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { classNames, } from '@/src/utils';
+import { signIn, signOut, useSession } from 'next-auth/react';
+import { usePath } from '@/src/hooks/usePath';
 
-import React from 'react';
-import styled from 'styled-components';
-
-const HeadContainer = styled.header`
-  position: relative;
-  height: 64px;
-  align-items: center;
-  padding: 0px 8px;
-  margin-bottom: 48px;
-  display: flex;
-  border: 0 solid #e5e7eb;
-  color: rgb(244 244 245);
-  grid-column-start: 2;
-  grid-column-end: 4;
-`;
-
-const Title = styled.span`
-  margin: 0 8px;
-`;
-
-const NextJsLogo = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    version="1.1"
-    viewBox="0 0 148 90"
-    xmlnsXlink="http://www.w3.org/1999/xlink"
-    {...props}
-  >
-    <path
-      d="M34.992 23.495h27.855v2.219H37.546v16.699h23.792v2.219H37.546v18.334h25.591v2.219H34.992v-41.69zm30.35 0h2.96l13.115 18.334 13.405-18.334L113.055.207 83.1 43.756l15.436 21.429H95.46L81.417 45.683 67.316 65.185h-3.018L79.85 43.756 65.343 23.495zm34.297 2.219v-2.219h31.742v2.219h-14.623v39.47h-2.554v-39.47H99.64zM.145 23.495h3.192l44.011 66.003L29.16 65.185 2.814 26.648l-.116 38.537H.145v-41.69zm130.98 38.801c-.523 0-.914-.405-.914-.928 0-.524.391-.929.913-.929.528 0 .913.405.913.929 0 .523-.385.928-.913.928zm2.508-2.443H135c.019.742.56 1.24 1.354 1.24.888 0 1.391-.535 1.391-1.539v-6.356h1.391v6.362c0 1.808-1.043 2.849-2.77 2.849-1.62 0-2.732-1.01-2.732-2.556zm7.322-.08h1.379c.118.853.95 1.395 2.149 1.395 1.117 0 1.937-.58 1.937-1.377 0-.685-.521-1.097-1.708-1.377l-1.155-.28c-1.62-.38-2.36-1.166-2.36-2.487 0-1.602 1.304-2.668 3.26-2.668 1.82 0 3.15 1.066 3.23 2.58h-1.354c-.13-.828-.85-1.346-1.894-1.346-1.1 0-1.832.53-1.832 1.34 0 .642.472 1.01 1.64 1.284l.987.243c1.838.43 2.596 1.178 2.596 2.53 0 1.72-1.33 2.799-3.453 2.799-1.987 0-3.323-1.029-3.422-2.637z"
-      fillRule="nonzero"
-    ></path>
-  </svg>
-);
+const solutions = [
+  {
+    name: 'Analytics',
+    description:
+      'Get a better understanding of where your traffic is coming from.',
+    href: '#',
+    icon: ChartBarIcon,
+  },
+  {
+    name: 'Engagement',
+    description: 'Speak directly to your customers in a more meaningful way.',
+    href: '#',
+    icon: CursorArrowRaysIcon,
+  },
+  {
+    name: 'Security',
+    description: "Your customers' data will be safe and secure.",
+    href: '#',
+    icon: ShieldCheckIcon,
+  },
+  {
+    name: 'Integrations',
+    description: "Connect with third-party tools that you're already using.",
+    href: '#',
+    icon: Squares2X2Icon,
+  },
+  {
+    name: 'Automations',
+    description:
+      'Build strategic funnels that will drive your customers to convert',
+    href: '#',
+    icon: ArrowPathIcon,
+  },
+];
+const callsToAction = [
+  { name: 'Watch Demo', href: '#', icon: PlayIcon },
+  { name: 'Contact Sales', href: '#', icon: PhoneIcon },
+];
+const resources = [
+  {
+    name: 'Help Center',
+    description:
+      'Get all of your questions answered in our forums or contact support.',
+    href: '#',
+    icon: LifebuoyIcon,
+  },
+  {
+    name: 'Guides',
+    description:
+      'Learn how to maximize our platform to get the most out of it.',
+    href: '#',
+    icon: BookmarkSquareIcon,
+  },
+  {
+    name: 'Events',
+    description:
+      'See what meet-ups and other events we might be planning near you.',
+    href: '#',
+    icon: CalendarIcon,
+  },
+  {
+    name: 'Security',
+    description: 'Understand how we take your privacy seriously.',
+    href: '#',
+    icon: ShieldCheckIcon,
+  },
+];
+const recentPosts = [
+  { id: 1, name: 'Boost your conversion rate', href: '#' },
+  {
+    id: 2,
+    name: 'How to use search engine optimization to drive traffic to your site',
+    href: '#',
+  },
+  { id: 3, name: 'Improve your customer experience', href: '#' },
+];
 
 export default function Header() {
+  // const { data, status } = useSession();
+
+  const url = process.env.NEXT_PUBLIC_NEXTAUTH_URL
+  const query = usePath();
+  if (query[0] === 'dashboard') {
+    return null;
+  }
   return (
-    <HeadContainer>
-      <NextJsLogo height={40} fill={`rgb(244 244 245)`} />
-      <Title>The React Framework</Title>
-    </HeadContainer>
+    <Popover className="relative bg-white">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="flex items-center justify-between border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
+          <div className="flex justify-start lg:w-0 lg:flex-1">
+            <a href="#">
+              <span className="sr-only">Your Company</span>
+              <img
+                className="h-8 w-auto sm:h-10"
+                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                alt=""
+              />
+            </a>
+          </div>
+          <div className="-my-2 -mr-2 md:hidden">
+            <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+              <span className="sr-only">Open menu</span>
+              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+            </Popover.Button>
+          </div>
+          <Popover.Group as="nav" className="hidden space-x-10 md:flex">
+            <Popover className="relative">
+              {({ open }) => (
+                <>
+                  <Popover.Button
+                    className={classNames(
+                      open ? 'text-gray-900' : 'text-gray-500',
+                      'group inline-flex items-center rounded-md bg-white text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2',
+                    )}
+                  >
+                    <span>Solutions</span>
+                    <ChevronDownIcon
+                      className={classNames(
+                        open ? 'text-gray-600' : 'text-gray-400',
+                        'ml-2 h-5 w-5 group-hover:text-gray-500',
+                      )}
+                      aria-hidden="true"
+                    />
+                  </Popover.Button>
+
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-200"
+                    enterFrom="opacity-0 translate-y-1"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition ease-in duration-150"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 translate-y-1"
+                  >
+                    <Popover.Panel className="absolute z-10 -ml-4 mt-3 w-screen max-w-md transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
+                      <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                        <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+                          {solutions.map((item) => (
+                            <a
+                              key={item.name}
+                              href={item.href}
+                              className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
+                            >
+                              <item.icon
+                                className="h-6 w-6 flex-shrink-0 text-indigo-600"
+                                aria-hidden="true"
+                              />
+                              <div className="ml-4">
+                                <p className="text-base font-medium text-gray-900">
+                                  {item.name}
+                                </p>
+                                <p className="mt-1 text-sm text-gray-500">
+                                  {item.description}
+                                </p>
+                              </div>
+                            </a>
+                          ))}
+                        </div>
+                        <div className="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
+                          {callsToAction.map((item) => (
+                            <div key={item.name} className="flow-root">
+                              <a
+                                href={item.href}
+                                className="-m-3 flex items-center rounded-md p-3 text-base font-medium text-gray-900 hover:bg-gray-100"
+                              >
+                                <item.icon
+                                  className="h-6 w-6 flex-shrink-0 text-gray-400"
+                                  aria-hidden="true"
+                                />
+                                <span className="ml-3">{item.name}</span>
+                              </a>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </Popover.Panel>
+                  </Transition>
+                </>
+              )}
+            </Popover>
+
+            <a
+              href="#"
+              className="text-base font-medium text-gray-500 hover:text-gray-900"
+            >
+              Pricing
+            </a>
+            <a
+              href="#"
+              className="text-base font-medium text-gray-500 hover:text-gray-900"
+            >
+              Docs
+            </a>
+
+            <Popover className="relative">
+              {({ open }) => (
+                <>
+                  <Popover.Button
+                    className={classNames(
+                      open ? 'text-gray-900' : 'text-gray-500',
+                      'group inline-flex items-center rounded-md bg-white text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2',
+                    )}
+                  >
+                    <span>More</span>
+                    <ChevronDownIcon
+                      className={classNames(
+                        open ? 'text-gray-600' : 'text-gray-400',
+                        'ml-2 h-5 w-5 group-hover:text-gray-500',
+                      )}
+                      aria-hidden="true"
+                    />
+                  </Popover.Button>
+
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-200"
+                    enterFrom="opacity-0 translate-y-1"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition ease-in duration-150"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 translate-y-1"
+                  >
+                    <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2 sm:px-0">
+                      <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                        <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+                          {resources.map((item) => (
+                            <a
+                              key={item.name}
+                              href={item.href}
+                              className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
+                            >
+                              <item.icon
+                                className="h-6 w-6 flex-shrink-0 text-indigo-600"
+                                aria-hidden="true"
+                              />
+                              <div className="ml-4">
+                                <p className="text-base font-medium text-gray-900">
+                                  {item.name}
+                                </p>
+                                <p className="mt-1 text-sm text-gray-500">
+                                  {item.description}
+                                </p>
+                              </div>
+                            </a>
+                          ))}
+                        </div>
+                        <div className="bg-gray-50 px-5 py-5 sm:px-8 sm:py-8">
+                          <div>
+                            <h3 className="text-base font-medium text-gray-500">
+                              Recent Posts
+                            </h3>
+                            <ul role="list" className="mt-4 space-y-4">
+                              {recentPosts.map((post) => (
+                                <li
+                                  key={post.id}
+                                  className="truncate text-base"
+                                >
+                                  <a
+                                    href={post.href}
+                                    className="font-medium text-gray-900 hover:text-gray-700"
+                                  >
+                                    {post.name}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className="mt-5 text-sm">
+                            <a
+                              href="#"
+                              className="font-medium text-indigo-600 hover:text-indigo-500"
+                            >
+                              View all posts
+                              <span aria-hidden="true"> &rarr;</span>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </Popover.Panel>
+                  </Transition>
+                </>
+              )}
+            </Popover>
+          </Popover.Group>
+          <div className="hidden items-center space-x-4 justify-end md:flex md:flex-1 lg:w-0">
+            {false ? (
+              <div
+                // onClick={() => signOut({ callbackUrl: url })}
+                className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900 cursor-pointer"
+              >
+                Sign out
+              </div>
+            ) : (
+              <Fragment>
+              <div
+              //   onClick={() =>signIn('google', {
+              //     callbackUrl: `${url}/dashboard`,
+              //   })
+              // }
+              className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900 cursor-pointer"
+              >
+                Sign in
+              </div>
+            <div
+              // onClick={() =>signIn('google', {
+              //   callbackUrl: `${url}/dashboard`,
+              // })}
+              className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 cursor-pointer"
+            >
+              Sign up
+            </div>
+                </Fragment>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <Transition
+        as={Fragment}
+        enter="duration-200 ease-out"
+        enterFrom="opacity-0 scale-95"
+        enterTo="opacity-100 scale-100"
+        leave="duration-100 ease-in"
+        leaveFrom="opacity-100 scale-100"
+        leaveTo="opacity-0 scale-95"
+      >
+        <Popover.Panel
+          focus
+          className="absolute inset-x-0 top-0 origin-top-right transform p-2 transition md:hidden"
+        >
+          <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+            <div className="px-5 pt-5 pb-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <img
+                    className="h-8 w-auto"
+                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                    alt="Your Company"
+                  />
+                </div>
+                <div className="-mr-2">
+                  <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                    <span className="sr-only">Close menu</span>
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                  </Popover.Button>
+                </div>
+              </div>
+              <div className="mt-6">
+                <nav className="grid gap-y-8">
+                  {solutions.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50"
+                    >
+                      <item.icon
+                        className="h-6 w-6 flex-shrink-0 text-indigo-600"
+                        aria-hidden="true"
+                      />
+                      <span className="ml-3 text-base font-medium text-gray-900">
+                        {item.name}
+                      </span>
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            </div>
+            <div className="space-y-6 py-6 px-5">
+              <div className="grid grid-cols-2 gap-y-4 gap-x-8">
+                <a
+                  href="#"
+                  className="text-base font-medium text-gray-900 hover:text-gray-700"
+                >
+                  Pricing
+                </a>
+
+                <a
+                  href="#"
+                  className="text-base font-medium text-gray-900 hover:text-gray-700"
+                >
+                  Docs
+                </a>
+                {resources.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="text-base font-medium text-gray-900 hover:text-gray-700"
+                  >
+                    {item.name}
+                  </a>
+                ))}
+              </div>
+              <div>
+                <a
+                  href="#"
+                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                >
+                  Sign up
+                </a>
+                <p className="mt-6 text-center text-base font-medium text-gray-500">
+                  Existing customer?{' '}
+                  <a href="#" className="text-indigo-600 hover:text-indigo-500">
+                    Sign in
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </Popover.Panel>
+      </Transition>
+    </Popover>
   );
 }

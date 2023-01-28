@@ -14,10 +14,12 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "downlevelIteration":true,
     "baseUrl": ".",
     "paths": {
       "@/ui/*": ["ui/*"],
       "@/lib/*": ["lib/*"],
+      "@/src/*": ["src/*"],
       "@/styles/*": ["styles/*"]
     },
     "plugins": [
