@@ -1,6 +1,5 @@
 import { ListAdoption } from '@/src/interfaces/adoption';
-import { ListPage, Page } from '@/src/interfaces/page';
-import { ConnectionArgs, ListInput } from '@/src/interfaces/site';
+import { ConnectionArgs } from '@/src/interfaces/site';
 
 export async function petGetAdoptionsWithCursor(
   args: ConnectionArgs,
@@ -11,7 +10,7 @@ export async function petGetAdoptionsWithCursor(
     headers: {
       'Content-Type': 'application/json',
     },
-    next: { revalidate: 86400 },
+    next: { revalidate: 10 },
     body: JSON.stringify({
       query: `
       query PetGetAdoptionsWithCursor($args: ConnectionArgs!, $parentId: String!){
