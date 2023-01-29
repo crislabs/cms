@@ -41,6 +41,7 @@ export interface UpdatePage {
   type: string
   parentId: string
   siteId: string
+  uid: string
 }
 export interface UpdateImage {
   id:string

@@ -2,6 +2,7 @@ import { petGetPages0WithCursor } from '@/lib/pages/page0/getPagesWithCursor'
 import { petGetSite } from '@/lib/sites/getSite'
 import { petGetSites } from '@/lib/sites/getSites'
 import { PaginationProvider } from '@/src/providers/PaginationContext'
+import { GridPetPages0 } from '@/ui/GridPetPages0'
 // import { GridPetPages0 } from '@/ui/GridPetPages0'
 
 interface Props {
@@ -13,8 +14,7 @@ export default async function Page(props: Props) {
   const listPage = await(petGetPages0WithCursor({first: 256}, props.params.siteId))
   return (
     <PaginationProvider>
-      <h1>Site</h1>
-      {/* <GridPetPages0 listPage={listPage} site={site}/> */}
+      <GridPetPages0 listPage={listPage} site={site}/>
     </PaginationProvider>
 
   )

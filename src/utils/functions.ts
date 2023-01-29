@@ -15,6 +15,14 @@ export function SwalMessage (title: string) {
     timer: 1000,
   })
 }
+export function SwalMessageError (message: string) {
+  return Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: message,
+    footer: '<a href="">Why do I have this issue?</a>',
+  });
+}
 export function SwalMessageSiteCreateError (message: string) {
   return Swal.fire({
     icon: 'error',

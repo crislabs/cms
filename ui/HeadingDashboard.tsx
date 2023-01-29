@@ -8,8 +8,6 @@ import { classNames, } from '@/src/utils';
 import { FolderPlusIcon, PencilIcon } from '@heroicons/react/24/solid';
 import { SlideOversForm } from './SlideOversForm';
 import { useKeyPress } from 'ahooks';
-import { FormPage } from './FormPage';
-import { FormSite } from './FormSite';
 import { FormAdoption } from './FormAdoption';
 import { FormArticle } from './FormArticle';
 import { FormCategory } from './FormCategory';
@@ -22,6 +20,8 @@ import { Fragment, useState } from 'react'
 import { SlideOversFormArticle } from './SlideOversFormArticle';
 import { FormContent } from './FormContent';
 import { usePath } from '@/src/hooks/usePath';
+import { FormSite } from './form/FormSite';
+import { FormPage } from './form/FormPage';
 
 interface Props {
   title?: string;
@@ -257,23 +257,7 @@ export function HeadingDashboard(props: Props) {
                   {query[5] === 'page0' && page?.data.type.slug === 'service' && 'Add Service'}
                   
                   {query[5] === 'page1' && page?.data.type.slug === 'product' && 'Add Product'}
-                  {/* {query.length === 4 &&
-                    searchParams.get('type') === 'adoption' &&
-                    'Add Adoption'}
-                  {query.length === 4 &&
-                    searchParams.get('type') === 'blog' &&
-                    'Add Article'}
-                  {query.length === 4 &&
-                    searchParams.get('type') === 'category' &&
-                    'Add Category'}
-                  {query.length === 4 &&
-                    searchParams.get('type') === 'pet' &&
-                    'Add Product'}
-                  {query.length === 4 &&
-                    ['page-blank', 'contact'].includes(
-                      searchParams.get('type') as string,
-                    ) &&
-                    'Add Component'} */}
+                  
                 </p>
               </button>
             </span>
