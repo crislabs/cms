@@ -6,7 +6,7 @@ export async function petGetSites():Promise<Site[]> {
    headers: {
      'Content-Type': 'application/json',
    },
-   cache: 'force-cache',
+  //  cache: 'force-cache',
   //  next: { revalidate: 86400 },
    body: JSON.stringify({
      query: `

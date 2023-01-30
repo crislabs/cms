@@ -7,7 +7,7 @@ export async function petGetPages1(): Promise<Page[]> {
     headers: {
       'Content-Type': 'application/json',
     },
-    next: { revalidate: 86400 },
+    // next: { revalidate: 86400 },
     body: JSON.stringify({
       query: `
       query PetGetPages1{
