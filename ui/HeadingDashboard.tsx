@@ -7,16 +7,14 @@ import { Site } from '@/src/interfaces/site';
 import { FolderPlusIcon } from '@heroicons/react/24/solid';
 import { SlideOversForm } from './SlideOversForm';
 import { useKeyPress } from 'ahooks';
-import { FormAdoption } from './FormAdoption';
 
-import { FormProduct } from './FormProduct';
-import { FormService } from './FormService';
+
 
 import { SlideOversFormArticle } from './SlideOversFormArticle';
-// import { FormContent } from './FormContent';
 import { usePath } from '@/src/hooks/usePath';
-import { FormSite, FormPage, FormCategory, FormArticle, FormContent } from './form';
+import { FormSite, FormPage, FormCategory, FormArticle, FormContent, FormAdoption, FormProduct, FormService } from './form';
 import Option from './button/Option';
+import { Adoption } from '@/src/interfaces/adoption';
 
 interface Props {
   title?: string;
@@ -24,6 +22,7 @@ interface Props {
   article?: Article;
   site?: Site;
   product?: Product;
+  adoption?: Adoption;
 }
 
 const sortOptionsSite = [

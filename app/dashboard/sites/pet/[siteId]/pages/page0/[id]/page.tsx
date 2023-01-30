@@ -15,8 +15,7 @@ import { petGetArticlesWithCursor } from '@/lib/articles/getArticlesWithCursor';
 // import { GridPetServices } from '@/ui/GridPetServices';
 import { petGetServicesWithCursor } from '@/lib/services/getServicesWithCursor';
 import { ListService } from '@/src/interfaces/service';
-import { GridPetPages1 } from '@/ui/grid/GridPetPages1';
-import { GridPetArticles } from '@/ui/grid';
+import { GridPetArticles, GridPetAdoptions, GridPetPages1, GridPetServices } from '@/ui/grid';
 // import { Grid } from '@/ui/Grid';
 
 interface Props {
@@ -59,15 +58,16 @@ export default async function Page0(props: Props) {
       {page.data.type.slug === 'category' && (
         <GridPetPages1 listPage={listPage} page={page} />
       )}
-        {page.data.type.slug === 'blog' && (
-          <GridPetArticles listArticle={listArticle} page={page} />
-        )}
-      {/* {page.data.type.slug === 'adoption' && (
+      {page.data.type.slug === 'blog' && (
+        <GridPetArticles listArticle={listArticle} page={page} />
+      )}
+      {page.data.type.slug === 'adoption' && (
         <GridPetAdoptions listAdoption={listAdoption} page={page} />
       )}
+      
       {page.data.type.slug === 'service' && (
         <GridPetServices listService={listService} page={page} />
-      )} */}
+      )} 
     </PaginationProvider>
   );
 }

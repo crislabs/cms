@@ -1,5 +1,4 @@
 import { ListService } from '@/src/interfaces/service';
-import { ListPage, Page } from '@/src/interfaces/page';
 import { ConnectionArgs, ListInput } from '@/src/interfaces/site';
 
 export async function petGetServicesWithCursor(
