@@ -19,6 +19,3 @@ For more information, see: https://turbo.build/pack/docs/features/css#tailwind-c
 
 https://nextjs.link/with-turbopack
 
-## Providing Feedback
-
-https://nextjs.link/turbopack-feedback
