@@ -9,7 +9,7 @@ export async function petGetPages0(): Promise<Page[]> {
       'Content-Type': 'application/json',
     },
     // cache: 'force-cache',
-    next: { revalidate: 86400 },
+    // next: { revalidate: 86400 },
     body: JSON.stringify({
       query: `
       query PetGetPages0{

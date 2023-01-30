@@ -10,7 +10,7 @@ export async function petGetPages0WithCursor(
     headers: {
       'Content-Type': 'application/json',
     },
-    next: { revalidate: 10 },
+    // next: { revalidate: 10 },
     // cache: 'force-cache',
     // next: { revalidate: 86400 },
 
