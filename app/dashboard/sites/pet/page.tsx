@@ -1,7 +1,7 @@
 
 import { petGetSitesWithCursor } from '@/lib/sites/getSitesWithCursor'
 import { PaginationProvider } from '@/src/providers/PaginationContext'
-import { GridPetSites } from '@/ui/GridPetSites'
+import { GridPetSites } from '@/ui/grid'
 
 export default async function Page() {
   const listSite = await(petGetSitesWithCursor({first: 256}))

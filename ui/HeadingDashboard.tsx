@@ -4,24 +4,19 @@ import { Article } from '@/src/interfaces/article';
 import { Page } from '@/src/interfaces/page';
 import { Product } from '@/src/interfaces/product';
 import { Site } from '@/src/interfaces/site';
-import { classNames, } from '@/src/utils';
-import { FolderPlusIcon, PencilIcon } from '@heroicons/react/24/solid';
+import { FolderPlusIcon } from '@heroicons/react/24/solid';
 import { SlideOversForm } from './SlideOversForm';
 import { useKeyPress } from 'ahooks';
 import { FormAdoption } from './FormAdoption';
-import { FormArticle } from './FormArticle';
-import { FormCategory } from './FormCategory';
+
 import { FormProduct } from './FormProduct';
 import { FormService } from './FormService';
-import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 
-import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
-import { Fragment, useState } from 'react'
 import { SlideOversFormArticle } from './SlideOversFormArticle';
-import { FormContent } from './FormContent';
+// import { FormContent } from './FormContent';
 import { usePath } from '@/src/hooks/usePath';
-import { FormSite } from './form/FormSite';
-import { FormPage } from './form/FormPage';
+import { FormSite, FormPage, FormCategory, FormArticle, FormContent } from './form';
+import Option from './button/Option';
 
 interface Props {
   title?: string;
@@ -31,7 +26,7 @@ interface Props {
   product?: Product;
 }
 
-const sortOptions = [
+const sortOptionsSite = [
   { name: 'Edit', slug: 'edit', current: true },
   { name: 'More information', slug: 'info', current: false },
   { name: 'Content', slug: 'content', current: false},
@@ -43,96 +38,94 @@ const sortOptionsArticle = [
   { name: 'Content', slug: 'content', current: false},
   { name: 'Seo', slug: '#', current: false }
 ]
+const sortOptionsPage = [
+  { name: 'Edit', slug: 'edit', current: true },
+  // { name: 'Content', slug: 'content', current: false},
+  { name: 'Seo', slug: '#', current: false }
+]
 
 export function HeadingDashboard(props: Props) {
   const { page, site, article, product, title } = props;
   const query = usePath();
-  // const searchParams = useSearchParams();
-  // console.log('query', query)
   const {
     childrenDashboard: { childrens, setChildrens },
-    toggleSlideOversForm: {
-      actions: { toggle },
-    },
-    toggleSlideOversFormArticle: { actions },
+    toggleSlideOversForm,
+    toggleSlideOversFormArticle,
     toggleSlideOversFormComponent: { actions: actionsComponent },
   } = useUI();
   useKeyPress(['ctrl.shift.e'], () => {
-    actions.toggle();
+    toggleSlideOversFormArticle.actions.toggle();
     // setChildrens(<FormContent article={article} />)
   });
   const handleClickEdit = (slug: string) => {
     if (slug === 'edit' && query.length === 4) {
-      toggle();
+      toggleSlideOversForm.actions.toggle();
       setChildrens(<FormSite site={site} />);
     }
     if (slug === 'edit' && query.length === 7) {
-      toggle();
+      toggleSlideOversForm.actions.toggle();
       setChildrens(<FormPage page={page} />);
     }
     if (slug === 'edit' && query.length === 6) {
-      toggle()
+      toggleSlideOversForm.actions.toggle()
       setChildrens(<FormArticle article={article} />);
     }
     if (slug === 'content' && query.length === 6) {
-      actions.toggle()
+      toggleSlideOversFormArticle.actions.toggle()
       setChildrens(<FormContent article={article} />);
     }
   }
   const handleClickAdd = () => {
     if (query.length === 3) {
-      toggle();
+      toggleSlideOversForm.actions.toggle();
       setChildrens(<FormSite />);
     }
     if (query.length === 4) {
-      toggle();
+      toggleSlideOversForm.actions.toggle();
       setChildrens(<FormPage />);
     }
 
     if (
       query[5] === 'page0' && page?.data.type.slug === 'category'
     ) {
-      toggle();
+      toggleSlideOversForm.actions.toggle();
       setChildrens(<FormCategory />);
     }
     if (
       query[5] === 'page0' && page?.data.type.slug === 'adoption'
     ) {
-      toggle();
+      toggleSlideOversForm.actions.toggle();
       setChildrens(<FormAdoption />);
     }
     if (
       query[5] === 'page0' && page?.data.type.slug === 'blog'
     ) {
-      toggle();
+      toggleSlideOversForm.actions.toggle();
       setChildrens(<FormArticle />);
     }
     if (
       query[5] === 'page0' && page?.data.type.slug === 'service'
     ) {
-      toggle();
+      toggleSlideOversForm.actions.toggle();
       setChildrens(<FormService />);
     }
     if (
       query[5] === 'page1' && page?.data.type.slug === 'product'
     ) {
-      toggle();
+      toggleSlideOversForm.actions.toggle();
       setChildrens(<FormProduct />);
     }
     
   };
   const handleClickUpdateDetails = () => {
-    toggle();
+    toggleSlideOversForm.actions.toggle();
     // setChildrens(<FormDetails product={product} />)
   };
   const handleClickUpdateSpecs = () => {
-    toggle();
+    toggleSlideOversForm.actions.toggle();
     // setChildrens(<FormSpecs product={product} />)
   };
-  const handleClickUpdateContent = () => {
-    actions.toggle();
-    // setChildrens(<FormContent article={article} />)
-  };
+  
   return (
     <div>
       <div className="flex lg:items-center justify-between">
@@ -142,100 +135,13 @@ export function HeadingDashboard(props: Props) {
           </h2>
           
           {site && (
-            <span className="block">
-
-            <Menu as="div" className="relative inline-block text-left">
-              <div>
-                <Menu.Button className="btn-default">
-                  Options
-                  <ChevronDownIcon
-                    className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                    aria-hidden="true"
-                  />
-                </Menu.Button>
-              </div>
-
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
-              >
-                <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="py-1">
-                    {sortOptions.map((option) => (
-                      <Menu.Item key={option.name}>
-                        {({ active }) => (
-                          <div
-                            className={classNames(
-                              option.current ? 'font-medium text-gray-900' : 'text-gray-500',
-                              active ? 'bg-gray-100' : '',
-                              'block px-4 py-2 text-sm cursor-default'
-                            )}
-                            onClick= {() => handleClickEdit(option.slug)}
-                          >
-                            {option.name}
-                          </div>
-                        )}
-                      </Menu.Item>
-                    ))}
-                  </div>
-                </Menu.Items>
-              </Transition>
-            </Menu>
-            </span>
-            
-            
+            <Option onPress={handleClickEdit} options={sortOptionsSite}/>
           )}
+          {page && (
+            <Option onPress={handleClickEdit} options={sortOptionsPage}/>
+            )}
           {article && (
-            <span className="block">
-
-            <Menu as="div" className="relative inline-block text-left">
-              <div>
-                <Menu.Button className="btn-default">
-                  Options
-                  <ChevronDownIcon
-                    className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                    aria-hidden="true"
-                  />
-                </Menu.Button>
-              </div>
-
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
-              >
-                <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="py-1">
-                    {sortOptionsArticle.map((option) => (
-                      <Menu.Item key={option.name}>
-                        {({ active }) => (
-                          <div
-                            className={classNames(
-                              option.current ? 'font-medium text-gray-900' : 'text-gray-500',
-                              active ? 'bg-gray-100' : '',
-                              'block px-4 py-2 text-sm cursor-default'
-                            )}
-                            onClick= {() => handleClickEdit(option.slug)}
-                          >
-                            {option.name}
-                          </div>
-                        )}
-                      </Menu.Item>
-                    ))}
-                  </div>
-                </Menu.Items>
-              </Transition>
-            </Menu>
-            </span>
+            <Option onPress={handleClickEdit} options={sortOptionsArticle}/>
           )}
         </div>
         <div className="flex">
@@ -280,30 +186,10 @@ export function HeadingDashboard(props: Props) {
               </button>
             </span>
           )}
-          {query[1] === 'articles' && (
-            <span className="block space-x-3">
-              <button
-                className="btn-primary space-x-3"
-                onClick={() => handleClickUpdateContent()}
-              >
-                <FolderPlusIcon className="h-6 w-6" aria-hidden="true" />
-                <p className="hidden sm:block">Update Content</p>
-              </button>
-              {/* <button className="btn-primary space-x-3"
-              onClick={() => handleClickUpdateSpecs()}
-            >
-              <FolderPlusIcon className="h-6 w-6" aria-hidden="true" />
-              <p className="hidden sm:block">
-                Add Specs
-              </p>
-            </button> */}
-            </span>
-          )}
+          
         </div>
       </div>
 
-      {/* <SlideOversFormComponent children={childrens} />
-       */}
       <SlideOversForm children={childrens} />
       <SlideOversFormArticle children={childrens} />
     </div>

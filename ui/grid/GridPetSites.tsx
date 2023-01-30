@@ -1,11 +1,12 @@
 'use client';
 
 import { SelectionProvider } from '@/src/providers/SelectionContext';
-import { HeadingDashboard } from './HeadingDashboard';
-import { HeadingDashboardOption } from './HeadingDashboardOptions';
+
 import { ListSite } from '@/src/interfaces/site';
-import { CardSite } from './CardSite';
 import { usePetListSite } from '@/src/hooks/sites';
+import { HeadingDashboard } from '../HeadingDashboard';
+import { HeadingDashboardOption } from '../HeadingDashboardOptions';
+import { CardSite } from '../card';
 
 interface Props {
   listSite: ListSite;

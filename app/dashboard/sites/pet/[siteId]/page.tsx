@@ -2,7 +2,7 @@ import { petGetPages0WithCursor } from '@/lib/pages/page0/getPagesWithCursor'
 import { petGetSite } from '@/lib/sites/getSite'
 import { petGetSites } from '@/lib/sites/getSites'
 import { PaginationProvider } from '@/src/providers/PaginationContext'
-import { GridPetPages0 } from '@/ui/GridPetPages0'
+import { GridPetPages0 } from '@/ui/grid/GridPetPages0'
 // import { GridPetPages0 } from '@/ui/GridPetPages0'
 
 interface Props {

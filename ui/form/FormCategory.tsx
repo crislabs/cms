@@ -3,6 +3,7 @@ import { useUI } from '@/src/providers/UIContext';
 import { CreatePage, Page, UpdatePage } from '@/src/interfaces/page';
 
 import {
+  typeCategoryPet,
   typePagePet,
 } from '@/src/utils';
 import { Dialog } from '@headlessui/react';
@@ -10,7 +11,7 @@ import {  XMarkIcon } from '@heroicons/react/24/outline';
 import { useSession } from 'next-auth/react';
 import React from 'react';
 import { usePath } from '@/src/hooks/usePath';
-import { usePetCreatePage0, usePetUpdatePage0 } from '@/src/hooks/pages';
+import { usePetCreatePage0, usePetCreatePage1, usePetUpdatePage0, usePetUpdatePage1 } from '@/src/hooks/pages';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -24,14 +25,14 @@ interface FormValues {
   type: string;
 }
 
-export function FormPage(props: Props) {
+export function FormCategory(props: Props) {
   const { page } = props;
   const { data: session } = useSession();
   const path = usePath();
   const { toggleSlideOversForm } = useUI();
   //toggleSlideOversForm.actions.setLeft
-  const createPetPage0 = usePetCreatePage0();
-  const updatePetPage0 = usePetUpdatePage0();
+  const createPetPage1 = usePetCreatePage1();
+  const updatePetPage1 = usePetUpdatePage1();
 
   return (
     <Formik
@@ -42,25 +43,25 @@ export function FormPage(props: Props) {
               name: page.data.name,
               description: page.data.description,
               siteId: path[3],
-              parentId: path[3],
+              parentId: path[6],
               type: page.data.type.slug,
               uid: (session?.user.sid as string) || '123456789',
             }
           : {
               name: '',
-              description: 'Page description',
+              description: 'Category description',
               uid: (session?.user.sid as string) || '123456789',
               siteId: path[3],
-              parentId: path[3],
+              parentId: path[6],
               type: '',
             }
       }
       onSubmit={(values) => {
         if (page) {
-          updatePetPage0.mutate(values as UpdatePage);
+          updatePetPage1.mutate(values as UpdatePage);
           // console.log('values', values);
         } else {
-          createPetPage0.mutate(values as CreatePage);
+          createPetPage1.mutate(values as CreatePage);
 
           // console.log('values', values);
         }
@@ -78,7 +79,7 @@ export function FormPage(props: Props) {
         <div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
           <div className="flex items-start justify-between">
             <Dialog.Title className="text-lg font-medium text-gray-900">
-              {page ? 'Edit Page' : 'New Page'}
+              {page ? 'Edit Category' : 'New Category'}
             </Dialog.Title>
             <div className="ml-3 flex h-7 items-center">
               <button
@@ -100,7 +101,7 @@ export function FormPage(props: Props) {
                     <div className="grid grid-cols-6 gap-6">
                       <div className="col-span-6">
                         <label className="label-form">Name</label>
-                        <Field name="name" type="text" className="input-form" autoComplete="off"/>
+                        <Field name="name" type="text" className="input-form" autoComplete="off" />
                         <ErrorMessage name="name" />
                       </div>
 
@@ -123,7 +124,7 @@ export function FormPage(props: Props) {
                         <div className="grid grid-cols-2">
                           <React.Fragment>
                             {path[2] === 'pet' &&
-                              typePagePet.map((data) => (
+                              typeCategoryPet.map((data) => (
                                 <div
                                   className="flex items-center my-2"
                                   key={data.label}
@@ -154,10 +155,10 @@ export function FormPage(props: Props) {
           <div className="group-button-form ">
             <button type="submit" className="btn-primary ">
               {page
-                ? updatePetPage0.isLoading
+                ? updatePetPage1.isLoading
                   ? '...Updating'
                   : 'Update'
-                : createPetPage0.isLoading
+                : createPetPage1.isLoading
                 ? '...Saving'
                 : 'Save'}
             </button>

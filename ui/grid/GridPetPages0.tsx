@@ -3,9 +3,9 @@
 import { SelectionProvider } from '@/src/providers/SelectionContext';
 import { ListPage } from '@/src/interfaces/page';
 
-import { CardPage0 } from './CardPage0';
-import { HeadingDashboard } from './HeadingDashboard';
-import { HeadingDashboardOption } from './HeadingDashboardOptions';
+import { CardPage0 } from '../card/CardPage0';
+import { HeadingDashboard } from '../HeadingDashboard';
+import { HeadingDashboardOption } from '../HeadingDashboardOptions';
 import { Site } from '@/src/interfaces/site';
 import { usePetGetSite } from '@/src/hooks/sites';
 import { usePetListPage0 } from '@/src/hooks/pages';
