@@ -8,7 +8,7 @@ export async function petGetArticles(): Promise<Article[]> {
     headers: {
       'Content-Type': 'application/json',
     },
-    next: { revalidate: 86400 },
+    // next: { revalidate: 86400 },
     body: JSON.stringify({
       query: `
       query PetGetArticles{

@@ -6,7 +6,6 @@ export async function petGetArticle(id: string): Promise<Article> {
     headers: {
       'Content-Type': 'application/json',
     },
-    cache: 'force-cache',
     // next: { revalidate: 86400 },
     body: JSON.stringify({
       query: `
