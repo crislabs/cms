@@ -17,7 +17,7 @@ export async function petGetSite(id: string):Promise<Site> {
       'Content-Type': 'application/json',
     },
     // cache: 'force-cache',
-    next: { revalidate: 10 },
+    // next: { revalidate: 10 },
     body: JSON.stringify({
       query: `
       query PetGetSite($id: String!) {

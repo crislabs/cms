@@ -7,7 +7,7 @@ export async function petGetSitesWithCursor(args: ConnectionArgs):Promise<ListSi
       'Content-Type': 'application/json',
     },
     // cache: 'force-cache',
-    next: { revalidate: 10 },
+    // next: { revalidate: 10 },
     body: JSON.stringify({
       query: `
       query PetGetSitesWithCursor($args: ConnectionArgs!) {
