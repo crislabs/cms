@@ -7,7 +7,7 @@ export async function petGetPage0(id: string): Promise<Page> {
     headers: {
       'Content-Type': 'application/json',
     },
-    cache: 'force-cache',
+    // cache: 'force-cache',
     // next: { revalidate: 86400 },
     body: JSON.stringify({
       query: `
