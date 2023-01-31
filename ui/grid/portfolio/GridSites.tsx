@@ -2,20 +2,21 @@
 
 import { SelectionProvider } from '@/src/providers/SelectionContext';
 import { ListSite } from '@/src/interfaces/site';
-import { usePetListSite } from '@/src/hooks/sites';
-import { HeadingDashboard } from '../HeadingDashboard';
-import { HeadingDashboardOption } from '../HeadingDashboardOptions';
-import { CardSite } from '../card';
+import { HeadingDashboard } from '@/ui/HeadingDashboard';
+import { HeadingDashboardOption } from '@/ui/HeadingDashboardOptions';
+import { CardSite } from '@/ui/card';
+import { usePortfolioListSite } from '@/src/hooks/portfolio/sites';
+
 
 interface Props {
   listSite: ListSite;
 }
 
-export function GridPetSites(props: Props) {
-  const {data: listSite} = usePetListSite(props.listSite)
+export function GridPortfolioSites(props: Props) {
+  const {data: listSite} = usePortfolioListSite(props.listSite)
   return (
     <SelectionProvider ids={listSite.page.edges?.map(data => data.node._id)}>
-      <HeadingDashboard title={"Sites"} />
+      <HeadingDashboard title={"Sites Portfolio"} />
       <HeadingDashboardOption />
 
       <div className={'grid-sites'}>

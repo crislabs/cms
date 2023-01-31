@@ -5,3 +5,5 @@ export { GridPetArticles } from './GridPetArticles';
 export { GridPetAdoptions } from './GridPetAdoptions';
 export { GridPetProducts } from './GridPetProducts';
 export { GridPetServices } from './GridPetServices';
+
+// export {} from './portfolio'

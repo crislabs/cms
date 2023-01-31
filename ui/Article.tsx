@@ -10,10 +10,6 @@ interface Props {
 }
 export function Article(props: Props) {
   const { data: post } = usePetGetArticle(props.article)
-  // const [ content ] = useLocalStorageState<string | undefined>(
-  //   post.slug as string
-  // );
-  // console.log('content', content)
   return (
     <React.Fragment>
       <HeadingDashboard title={post.data.name} article={post} />

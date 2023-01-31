@@ -9,6 +9,7 @@ import { usePath } from '@/src/hooks/usePath';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { usePetCreateSite, usePetUpdateSite } from '@/src/hooks/sites';
 import * as Yup from 'yup';
+import { usePortfolioCreateSite, usePortfolioUpdateSite } from '@/src/hooks/portfolio/sites';
 
 interface Props {
   site?: Site;
@@ -26,9 +27,9 @@ export function FormSite(props: Props) {
   const path = usePath();
   const { toggleSlideOversForm } = useUI();
   const createPetSite = usePetCreateSite();
-  // console.log('createPetSite', createPetSite)
+  const createPortfolioSite = usePortfolioCreateSite();
   const updatePetSite = usePetUpdateSite();
-  // console.log('updatePetSite', updatePetSite)
+  const updatePortfolioSite = usePortfolioUpdateSite();
 
   return (
     <Formik
@@ -47,9 +48,13 @@ export function FormSite(props: Props) {
       }
       onSubmit={(values) => {
         if (site) {
-          updatePetSite.mutate(values as UpdateSite);
+          if (path[2]==='pet') updatePetSite.mutate(values as UpdateSite);
+          if (path[2]==='portfolio') updatePortfolioSite.mutate(values as UpdateSite);
+          
         } else {
-          createPetSite.mutate(values as CreateSite);
+          if (path[2]==='pet') createPetSite.mutate(values as CreateSite);
+          if (path[2]==='portfolio') createPortfolioSite.mutate(values as CreateSite);
+          
         }
       }}
       validationSchema={Yup.object({
@@ -99,10 +104,10 @@ export function FormSite(props: Props) {
           <div className="group-button-form ">
             <button type="submit" className="btn-primary ">
               {site
-                ? updatePetSite.isLoading
+                ? (updatePetSite.isLoading || updatePortfolioSite)
                   ? '...Updating'
                   : 'Update'
-                : createPetSite.isLoading
+                : (createPetSite.isLoading || createPortfolioSite.isLoading)
                 ? '...Saving'
                 : 'Save'}
             </button>
